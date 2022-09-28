@@ -200,8 +200,8 @@ def astar_search(graph, start, goal):
         return path, explored_nodes
 
     path.append(start)
-    #path_cost = get_manhattan_heuristic(start, goal)
-    path_cost = get_geographical_heuristic(start, goal)
+    path_cost = get_manhattan_heuristic(start, goal)
+    #path_cost = get_geographical_heuristic(start, goal)
     
     # Priority Queue to keep sorted distance travelled till now
     frontier = [(path_cost, path)]
@@ -209,8 +209,8 @@ def astar_search(graph, start, goal):
         # pop a node from the queue
         path_cost_till_now, path_till_now = pop_frontier(frontier)
         current_node = path_till_now[-1]
-        path_cost_till_now = path_cost_till_now - get_geographical_heuristic(current_node, goal)
-        #path_cost_till_now = path_cost_till_now - get_manhattan_heuristic(current_node, goal)
+        #path_cost_till_now = path_cost_till_now - get_geographical_heuristic(current_node, goal)
+        path_cost_till_now = path_cost_till_now - get_manhattan_heuristic(current_node, goal)
        
         explored_nodes.append(current_node)
         # test goal condition
@@ -229,8 +229,8 @@ def astar_search(graph, start, goal):
 
             # extra_cost = graph.get_edge_weight(current_node, neighbour)
             extra_cost = 1
-            neighbour_cost = extra_cost + path_cost_till_now + get_geographical_heuristic(neighbour, goal)
-            #neighbour_cost = extra_cost + path_cost_till_now + get_manhattan_heuristic(neighbour, goal)
+            #neighbour_cost = extra_cost + path_cost_till_now + get_geographical_heuristic(neighbour, goal)
+            neighbour_cost = extra_cost + path_cost_till_now + get_manhattan_heuristic(neighbour, goal)
             
             new_element = (neighbour_cost, path_to_neighbour)
 
