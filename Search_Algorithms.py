@@ -133,6 +133,49 @@ class PriorityQueue(object):
         else:
             return 0, None
 
+def greedy_search(graph, start, goal):    
+
+    path = []    
+    explored_nodes = list()    
+
+    if start == goal:    
+        return path, explored_nodes    
+
+    path.append(start)    
+    path_cost = 0  
+    frontier = [(path_cost, path)]    
+    while len(frontier) > 0:    
+        path_cost_till_now, path_till_now = pop_frontier(frontier)    
+        current_node = path_till_now[-1]    
+        path_cost_till_now = path_cost_till_now #- get_manhattan_heuristic(current_node, goal)    
+        explored_nodes.append(current_node)    
+        if current_node == goal:    
+            return path_till_now, explored_nodes    
+
+        neighbours = graph[current_node]    
+
+        neighbours_list_int = [int(n) for n in neighbours]    
+        neighbours_list_int.sort(reverse=False)    
+        neighbours_list_str = [str(n) for n in neighbours_list_int]    
+
+        for neighbour in neighbours_list_str:    
+            path_to_neighbour = path_till_now.copy()    
+            path_to_neighbour.append(neighbour)    
+            extra_cost = 1    
+            neighbour_cost = extra_cost + path_cost_till_now #+ get_manhattan_heuristic(neighbour, goal)    
+            new_element = (neighbour_cost, path_to_neighbour)    
+
+            is_there, indexx, neighbour_old_cost, _ = get_frontier_params_new(neighbour, frontier)    
+
+            if (neighbour not in explored_nodes) and not is_there:    
+                frontier.append(new_element)    
+
+            elif is_there:    
+                if neighbour_old_cost > neighbour_cost:    
+                    frontier.pop(indexx)    
+                    frontier.append(new_element)    
+
+    return None, None 
 
 def uniform_cost_search(graph, start, goal):
     path = []
@@ -320,11 +363,18 @@ if __name__ == '__main__':
    # print(len(explored_ucs))
     #print()
 
-    print("============ AStar Search ================")
-    path_astar, explored_astar = astar_search(graph_neighbours, '1', '61')
-    print("Path_astar:", path_astar)
-    print("Explored Nodes A Star: ", explored_astar)
-    print(len(explored_astar))
+    #print("============ AStar Search ================")
+    #path_astar, explored_astar = astar_search(graph_neighbours, '1', '61')
+    #print("Path_astar:", path_astar)
+    #print("Explored Nodes A Star: ", explored_astar)
+    #print(len(explored_astar))
+    #print()
+
+    print("============ greedy Search ================")
+    path_greedy, explored_greedy = greedy_search(graph_neighbours, '0', '61')
+    print("Path_astar:", path_greedy)
+    print("Explored Nodes A Star: ", explored_greedy)
+    print(len(explored_greedy))
     print()
 
    # print("============ Bottleneck Astar Search ================")
